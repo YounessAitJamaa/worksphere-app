@@ -7,10 +7,100 @@
     <link rel="stylesheet" href="/dist/output.css">
 </head>
 <body>
-    <main>
-        <section>
+    <main class="flex gap-3">
+        <section class="basis-1/4 w-full h-[100vh]">
+          <div class="mt-4 ml-4 rounded-lg bg-blue-200 h-[90vh] overflow-auto">
+            <h2 class="font-bold text-center md:text-[1.5rem]">
+              Unassigned Staff
+            </h2>
+            <div id="unassigned" class="hover:shadow-2xl transition-shadow duration-300">
+              <div class="shadow-xl rounded-lg m-2 md:m-4 flex justify-between bg-white">
+                <div class="flex">
+                  <img src="https://avatar.iran.liara.run/public/4" alt="staff image" class="rounded-full w-8 h-8 m-2 md:m-3 md:w-14 md:h-14">
+                  <h3 class="font-bold text-[.8rem] md:text-[1rem] mt-1 md:mt-3 md:ml-4">Youness <br> <span class="md:text-[.8rem] text-gray-400">it</span></h3>
+                </div>
+                <div class="flex">
+                  <button class="mr-3 text-yellowButton text-[.7rem] md:text-[1.2rem] font-bold">Edit</button>
+                </div>
+              </div>
+            </div>
             
+            <div class="flex justify-center">
+              <button class="bg-greenButton text-[.7rem] text-white py-1 px-2 md:text-[1rem] md:font-bold md:py-3 md:px-5 rounded hover:text-greenButton hover:bg-white">
+                Add New Worker
+              </button>
+            </div>
+          </div>
         </section>
+        <section  class="basis-3/4 w-full">
+          <div class="grid grid-cols-[38%_17%_22%_22%] grid-rows-[33.5%_33%_33%] h-[90vh] w-full mt-4 bg-[url('/img/plan.jpg')] bg-cover bg-center">
+            <!-- Salle de conférence -->
+            <div class="bg-[rgba(255,0,0,0.2)] border-4 border-black flex flex-col h-full">
+              
+              <h3 class="text-center text-[.5rem] md:text-[1.2rem] font-bold md:mt-3">Salle de conférence</h3> 
+              
+              <div class="grid grid-cols-3 grid-rows-2 mt-1 ml-2 gap-2 md:gap-2 md:mt-2 md:ml-3">
+
+                <!--Card-->
+                <div class="rounded-lg flex justify-between items-center bg-white md:p-1 w-fit h-5 md:w-28 md:h-full">
+                  <div class="flex items-center">
+                    <div class="mr-1 p-0.5">
+                      <img src="https://avatar.iran.liara.run/public/4" alt="staff image" class="rounded-full w-4 h-4 md:w-8 md:h-8">
+                    </div>
+                    <div class="flex flex-col">
+                      <h3 class="font-bold text-[.3rem] md:text-[.6rem]">Youness</h3>
+                        <p class="text-gray-400 text-[.3rem] md:text-[.6rem]">it</p>
+                    </div>
+                  </div>
+                  <button class="text-red-600 text-[.4rem] md:text-[1rem] font-bold ml-1 pr-1 md:ml-2">X</button>
+                </div>
+
+
+
+
+              </div>
+
+              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 md:mb-2 md:px-3 md:py-2">+</button>
+            </div>
+            
+            <div class="row-span-3"></div>
+
+            <!-- Salle des serveurs -->
+            <div class="bg-[rgba(255,0,0,0.2)] border-4 border-black flex flex-col justify-between">
+              <h3 class="text-center text-[.6rem] md:text-[1.2rem] font-bold mt-3">Salle des serveurs</h3>
+              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 mb-2 md:px-3 md:py-2">+</button>
+            </div>
+
+            <!-- Salle de sécurité -->
+            <div class="bg-[rgba(255,0,0,0.2)] border-4 border-black flex flex-col justify-between">
+              <h3 class="text-center text-[.6rem] md:text-[1.2rem] font-bold mt-3">Salle de sécurité</h3>
+              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 mb-2 md:px-3 md:py-2">+</button>
+            </div>
+
+            <!-- Réception -->
+            <div class="bg-[rgba(255,0,0,0.2)] row-span-2 border-4 border-black flex flex-col justify-between">
+              <h3 class="text-center text-[.6rem] md:text-[1.2rem] font-bold mt-3">Réception</h3>
+              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 mb-2 md:px-3 md:py-2">+</button>
+            </div>
+
+            <div class="col-span-2">
+              <h3 class="text-center mt-3"></h3>
+            </div>
+
+            <!-- Salle du personnel -->
+            <div class="bg-[rgba(255,0,0,0.2)] border-4 border-black flex flex-col justify-between">
+              <h3 class="text-center text-[.6rem] md:text-[1.2rem] font-bold mt-3">Salle du personnel</h3>
+              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 mb-2 md:px-3 md:py-2">+</button>
+            </div>
+
+            <!-- Salle d’archives -->
+            <div class="bg-[rgba(255,0,0,0.2)] border-4 border-black flex flex-col justify-between">
+              <h3 class="text-center text-[.6rem] md:text-[1.2rem] font-bold mt-3">Salle d’archives</h3>
+              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 mb-2 md:px-3 md:py-2">+</button>
+            </div>
+          </div>
+        </section>
+
     </main>
 </body>
 </html>
