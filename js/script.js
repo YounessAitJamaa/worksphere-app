@@ -43,17 +43,40 @@ addExperienceButton.addEventListener('click', () => {
     expContainer.appendChild(expItem);
 });
 
-// const unassingnedStaff = JSON.parse(localStorage.getItem('unassingnedStaff'))  || [];
+const unassingnedStaff = [];
 
-let imageSrc = ''; // image url variable
+
+let imageSrc = '../img/default.png'; // image url variable
+document.getElementById('imageHolder').src = imageSrc;
 const image = document.getElementById('image'); // image url input
 
 // eventListener for changing the image holder for 
 image.addEventListener('change', (e) => {
     imageSrc = e.target.value;
     document.getElementById('imageHolder').src = imageSrc;
-})
+})  
 
+
+const regexName = /^[A-Za-z\s]{3,20}$/;
+const regexEmail = /^[A-Za-z0-9^\s@]+@[^\s@]+\.[^\s@]+$/;
+const regexPhone = /^[0-9+\s-]{10,13}$/;
+
+
+function validationName(name) {
+    return regexName.test(name);
+}
+
+function validationEmail(email) {
+    return regexEmail.test(email);
+}
+
+function validationPhone(phone) {
+    return regexPhone.test(phone);
+}
+
+function validationDates(start, end) {
+    return new Date(start) < new Date(end);
+}
 
 addWorkerForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -63,10 +86,33 @@ addWorkerForm.addEventListener('submit', (e) => {
     const email = document.querySelector('input[name="email"]').value;
     const phone = document.querySelector('input[name="phone"]').value;
 
+    console.log(validationName(name));
+    if (!validationName(name)) {
+        alert('Invalid Name');
+        return;
+    }
+
+    if (!validationEmail(email)) {
+        alert('invalid email');
+        return;
+    }
+
+    if (!validationPhone(phone)) {
+        alert('invalid phone');
+        return;
+    }
 
     const experiences = [];
+    let dateError = false;
 
     document.querySelectorAll('.exp-item').forEach(exp => {
+        const start = exp.querySelector('.exp-start').value;
+        const end = exp.querySelector('.exp-end').value;
+        if (!validationDates(start, end)) {
+            alert('Start date cannot be after end date.');
+            dateError = true;
+            return;
+        }
         experiences.push({
             post : exp.querySelector('.exp-title').value,
             enterprise : exp.querySelector('.exp-company').value,
@@ -74,6 +120,7 @@ addWorkerForm.addEventListener('submit', (e) => {
             dateFin : exp.querySelector('.exp-end').value,
         });
     });
+    if (dateError) return;
 
     const staff = {name, role, imageSrc, email, phone,experiences};
 
@@ -84,5 +131,6 @@ addWorkerForm.addEventListener('submit', (e) => {
     addWorkerForm.reset();
     closeModal();
 })
+
 
 
