@@ -1,3 +1,5 @@
+const unassingnedStaff = JSON.parse(localStorage.getItem('unassingnedStaff')) || []; // the list for unassigned Staff
+
 const addNewWorker = document.getElementById('addNewWorker'); // add new worker button
 const modal = document.getElementById('modale'); // the modal
 const closeModalbutton = document.querySelectorAll('.closeModal'); // the close buttons
@@ -43,8 +45,6 @@ addExperienceButton.addEventListener('click', () => {
     expContainer.appendChild(expItem);
 });
 
-const unassingnedStaff = [];
-
 
 let imageSrc = '../img/default.png'; // image url variable
 document.getElementById('imageHolder').src = imageSrc;
@@ -57,6 +57,7 @@ image.addEventListener('change', (e) => {
 })  
 
 
+// RegExp for validation 
 const regexName = /^[A-Za-z\s]{3,20}$/;
 const regexEmail = /^[A-Za-z0-9^\s@]+@[^\s@]+\.[^\s@]+$/;
 const regexPhone = /^[0-9+\s-]{10,13}$/;
@@ -77,6 +78,33 @@ function validationPhone(phone) {
 function validationDates(start, end) {
     return new Date(start) < new Date(end);
 }
+
+const unassignedContainer = document.getElementById('unassigned');
+
+
+// function for Showing the staff
+function DisplayStaff(unassingnedList) {
+
+    unassignedContainer.innerHTML = '';
+    unassingnedList.forEach(staff => {
+        const stafItem = document.createElement('div');
+        const fullName = staff.name.split(' ');
+        const lastName = fullName[fullName.length - 1];
+        stafItem.classList.add('shadow-xl', 'rounded-lg', 'm-2', 'md:m-4', 'flex', 'justify-between', 'bg-white');
+        stafItem.innerHTML = `
+                                <div class="flex">
+                                    <img src="${staff.imageSrc}" alt="staff image" class="rounded-full w-8 h-8 m-2 md:m-3 md:w-14 md:h-14 object-cover">
+                                    <h3 class="font-bold text-[.8rem] md:text-[1rem] mt-1 md:mt-3 md:ml-4">${lastName} <br> <span class="md:text-[.8rem] text-gray-400">${staff.role}</span></h3>
+                                </div>
+                                <div class="flex">
+                                    <button class="mr-3 text-yellowButton text-[.7rem] md:text-[1.2rem] font-bold">Edit</button>
+                                </div>
+                            `;
+        unassignedContainer.appendChild(stafItem);
+    })
+}
+
+DisplayStaff(unassingnedStaff); 
 
 addWorkerForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -120,17 +148,25 @@ addWorkerForm.addEventListener('submit', (e) => {
             dateFin : exp.querySelector('.exp-end').value,
         });
     });
+
     if (dateError) return;
 
     const staff = {name, role, imageSrc, email, phone,experiences};
 
     unassingnedStaff.push(staff);
 
-
-    // localStorage.setItem('unassingnedStaff', JSON.stringify(unassingnedStaff));
+    DisplayStaff(unassingnedStaff);
+    localStorage.setItem('unassingnedStaff', JSON.stringify(unassingnedStaff));
+    imageSrc = '../img/default.png';
+    document.getElementById('imageHolder').src = imageSrc;
     addWorkerForm.reset();
+    
     closeModal();
-})
+});
+
+
+
+
 
 
 
