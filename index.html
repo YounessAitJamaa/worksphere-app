@@ -26,7 +26,7 @@
             </div>
             
             <div class="flex justify-center">
-              <button class="bg-greenButton text-[.7rem] text-white py-1 px-2 md:text-[1rem] md:font-bold md:py-3 md:px-5 rounded hover:text-greenButton hover:bg-white">
+              <button class="bg-greenButton text-[.7rem] text-white py-1 px-2 md:text-[1rem] md:font-bold md:py-3 md:px-5 rounded hover:text-greenButton hover:bg-white" id="addNewWorker">
                 Add New Worker
               </button>
             </div>
@@ -42,22 +42,18 @@
               <div class="grid grid-cols-3 grid-rows-2 mt-1 ml-2 gap-2 md:gap-2 md:mt-2 md:ml-3">
 
                 <!--Card-->
-                <div class="rounded-lg flex justify-between items-center bg-white md:p-1 w-fit h-5 md:w-28 md:h-full">
+                <div class="rounded-lg flex justify-between items-center bg-white md:p-0.5 w-fit h-5 md:w-28 md:h-full">
                   <div class="flex items-center">
-                    <div class="mr-1 p-0.5">
+                    <div class="md:mr-1 p-0.5">
                       <img src="https://avatar.iran.liara.run/public/4" alt="staff image" class="rounded-full w-4 h-4 md:w-8 md:h-8">
                     </div>
-                    <div class="flex flex-col">
+                    <div class="flex flex-col mr-1">
                       <h3 class="font-bold text-[.3rem] md:text-[.6rem]">Youness</h3>
                         <p class="text-gray-400 text-[.3rem] md:text-[.6rem]">it</p>
                     </div>
                   </div>
-                  <button class="text-red-600 text-[.4rem] md:text-[1rem] font-bold ml-1 pr-1 md:ml-2">X</button>
+                  <button class="text-white text-[.4rem] bg-red-600 rounded-full md:text-[.7rem] font-bold px-0.5 md:px-1 mr-1 md:mr-0.5 md:ml-0.5">✕</button>
                 </div>
-
-
-
-
               </div>
 
               <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 md:mb-2 md:px-3 md:py-2">+</button>
@@ -66,21 +62,30 @@
             <div class="row-span-3"></div>
 
             <!-- Salle des serveurs -->
-            <div class="bg-[rgba(255,0,0,0.2)] border-4 border-black flex flex-col justify-between">
-              <h3 class="text-center text-[.6rem] md:text-[1.2rem] font-bold mt-3">Salle des serveurs</h3>
-              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 mb-2 md:px-3 md:py-2">+</button>
+            <div class="bg-[rgba(255,0,0,0.2)] border-4 border-black flex flex-col h-full">
+              <h3 class="text-center text-[.5rem] md:text-[1.2rem] font-bold md:mt-3">Salle des serveurs</h3>
+
+              <div class="grid grid-cols-[48%_48%] grid-rows-2 gap-1 mt-1 md:gap-2 md:mt-2">
+
+              </div>
+
+              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 md:mb-2 md:px-3 md:py-2">+</button>
             </div>
 
             <!-- Salle de sécurité -->
-            <div class="bg-[rgba(255,0,0,0.2)] border-4 border-black flex flex-col justify-between">
-              <h3 class="text-center text-[.6rem] md:text-[1.2rem] font-bold mt-3">Salle de sécurité</h3>
-              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 mb-2 md:px-3 md:py-2">+</button>
+            <div class="bg-[rgba(255,0,0,0.2)] border-4 border-black flex flex-col h-full">
+              <h3 class="text-center text-[.5rem] md:text-[1.2rem] font-bold md:mt-3">Salle de sécurité</h3>
+
+              <div class="grid grid-cols-1 grid-rows-2 gap-1 mt-1 md:gap-2 md:mt-2">
+
+              </div>
+              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 md:mb-2 md:px-3 md:py-2">+</button>
             </div>
 
             <!-- Réception -->
-            <div class="bg-[rgba(255,0,0,0.2)] row-span-2 border-4 border-black flex flex-col justify-between">
-              <h3 class="text-center text-[.6rem] md:text-[1.2rem] font-bold mt-3">Réception</h3>
-              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 mb-2 md:px-3 md:py-2">+</button>
+            <div class="bg-[rgba(255,0,0,0.2)] row-span-2 border-4 border-black flex flex-col h-full">
+              <h3 class="text-center text-[.5rem] md:text-[1.2rem] font-bold md:mt-3">Réception</h3>
+              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 md:mb-2 md:px-3 md:py-2">+</button>
             </div>
 
             <div class="col-span-2">
@@ -88,19 +93,98 @@
             </div>
 
             <!-- Salle du personnel -->
-            <div class="bg-[rgba(255,0,0,0.2)] border-4 border-black flex flex-col justify-between">
-              <h3 class="text-center text-[.6rem] md:text-[1.2rem] font-bold mt-3">Salle du personnel</h3>
-              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 mb-2 md:px-3 md:py-2">+</button>
+            <div class="bg-[rgba(255,0,0,0.2)] border-4 border-black flex flex-col h-full">
+              <h3 class="text-center text-[.5rem] md:text-[1.2rem] font-bold md:mt-3">Salle du personnel</h3>
+              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 md:mb-2 md:px-3 md:py-2">+</button>
             </div>
 
             <!-- Salle d’archives -->
-            <div class="bg-[rgba(255,0,0,0.2)] border-4 border-black flex flex-col justify-between">
-              <h3 class="text-center text-[.6rem] md:text-[1.2rem] font-bold mt-3">Salle d’archives</h3>
-              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 mb-2 md:px-3 md:py-2">+</button>
+            <div class="bg-[rgba(255,0,0,0.2)] border-4 border-black flex flex-col h-full">
+              <h3 class="text-center text-[.5rem] md:text-[1.2rem] font-bold md:mt-3">Salle d’archives</h3>
+              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 md:mb-2 md:px-3 md:py-2">+</button>
             </div>
           </div>
         </section>
 
     </main>
+
+    <section class="hidden fixed inset-0 z-50 bg-black/50 flex md:items-center justify-center overflow-y-auto p-4" id="modale">
+
+      <div class="bg-white rounded-lg w-full md:w-[70%] p-4 md:p-6 shadow-lg max-h-[90vh] overflow-y-auto">
+
+        <header class="flex justify-between mb-4">
+          <h2 class="text-lg font-bold text-greenButton">Add New Worker</h2>
+          <button class="text-lg font-bold closeModal">✕</button>
+        </header>
+
+        <form id="addWorkerForm" class="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <div>
+            <label for="name" class="block text-sm font-medium">Name</label>
+            <input id="name" name="name" type="text" required class="mt-1 w-full px-2 py-1 border rounded bg-gray-300 text-black outline-none" placeholder="Enter your Name">
+          </div>
+
+          <div>
+            <label for="Role" class="block text-sm font-medium">Role</label>
+            <select name="Role" id="Role" class="w-full p-2 bg-gray-200 rounded outline-none">
+              <option value="Manager">Manager</option>
+              <option value="Réceptionnistes">Réceptionnistes</option>
+              <option value="Techniciens IT">Techniciens IT</option>
+              <option value="Agents de sécurité">Agents de sécurité</option>
+              <option value="Nettoyage">Nettoyage</option>
+              <option value="Autres rôles">Autres rôles</option>
+          </select>
+          </div>
+
+          <div class="md:col-span-2">
+            <label for="image" class="block text-sm font-medium">Image (URL)</label>
+            <input id="image" name="avatar" type="url" class="mt-1 px-2 w-full py-1 border rounded outline-none bg-gray-300" placeholder="Image url">
+          </div>
+
+          <div class="md:col-span-2 border-2 border-dashed border-black w-32 h-32 rounded-full m-2 overflow-hidden flex items-center justify-center">
+            <img src="./img/default.png" alt="staff image" class="object-cover w-full h-full">
+          </div>
+
+          <div>
+            <label for="email" class="block text-sm font-medium">Email</label>
+            <input type="email" name="email" required class="mt-1 w-full px-2 py-1 border rounded bg-gray-300 text-black outline-none" placeholder="Enter your Email">
+          </div>
+
+          <div>
+            <label for="phone" class="block text-sm font-medium">Phone Number</label>
+            <input type="tel" name="phone" required class="mt-1 w-full px-2 py-1 border rounded bg-gray-300 text-black outline-none" placeholder="Enter your Phone Number">
+          </div>
+
+          <div class="flex flex-col w-full gap-2 col-span-2 mt-2">
+            <label for="experiences" class="block text-sm font-medium mb-1">Experiences:</label>
+            <div class="exp-container w-full bg-gray-200 p-2 flex flex-col gap-2">
+            <div class="exp-item flex flex-col gap-2">
+              <div class="flex justify-between items-center">
+                <h5 class="font-semibold mb-2">Expérience 1</h5>
+              </div>
+              <input type="text" placeholder="Poste" class="exp-title w-full p-2 bg-white rounded border border-gray-300" required>
+              <input type="text" placeholder="Entreprise" class="exp-company w-full p-2 bg-white rounded border border-gray-300" required>
+              <div class="flex flex-col gap-2">
+                <label for="">Date debut</label>
+                <input type="date" class="exp-start p-2 bg-white rounded border border-gray-300 flex-1" required>
+              </div>
+
+              <div class="flex flex-col gap-2">
+                <label for="">Date fin</label>
+                <input type="date" class="exp-start p-2 bg-white rounded border border-gray-300 flex-1" required>
+              </div>
+            </div>
+            </div>
+            <button class="w-fit bg-orange-500 border border-none text-white p-2 cursor-pointer rounded">Add Experience</button>
+          </div>
+
+          <div class="flex gap-2 justify-end pt-2 md:col-span-2">
+            <button type="button" class="px-10 py-1 rounded border-2 closeModal">Cancel</button>
+            <button type="submit" class="px-10 py-1 rounded bg-blue-600 text-white">Add</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <script src="./js/script.js"></script>
 </body>
 </html>
