@@ -274,7 +274,11 @@ AddButton.forEach(btn => {
 });
 
 
-
+function addStaffToRoom(roomName, staff) {
+    if(!roomsData[roomName]) roomsData[roomName] = [];
+    roomsData[roomName].push(staff);
+    localStorage.setItem('roomsData', JSON.stringify(roomsData));
+}
 
 staffContainer.addEventListener("click", (e) => {
     const card = e.target.closest('.card');
