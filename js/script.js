@@ -286,6 +286,13 @@ staffContainer.addEventListener("click", (e) => {
 
     const id = Number(card.dataset.id);
     const index = currentRoomList.findIndex(staff => staff.Id === id);
+    const realIndex = unassingnedStaff.findIndex(staff => staff.Id === id);
+
+    if(realIndex !== -1) {
+        unassingnedStaff.splice(realIndex, 1);
+        localStorage.setItem('unassingnedStaff', JSON.stringify(unassingnedStaff));
+        DisplayStaff(unassingnedStaff);
+    }
 
     if(index == -1) return;
     const item = currentRoomList[index];
@@ -296,7 +303,7 @@ staffContainer.addEventListener("click", (e) => {
     const lastName = fullName[fullName.length - 1];
     
     const itemContainer = document.createElement("div");
-    itemContainer.classList.add('rounded-lg', 'flex', 'justify-between', 'items-center', 'bg-white', 'md:p-0.5', 'w-fit', 'h-5', 'md:w-28', 'md:h-full');
+    itemContainer.classList.add('rounded-lg', 'flex', 'justify-between', 'items-center', 'bg-white', 'md:p-0.5', 'w-fit', 'h-5', 'md:w-28', 'md:h-full', 'cardRoom');
     itemContainer.innerHTML = `
                                 <div class="flex items-center">
                                         <div class="md:mr-1 p-0.5">
@@ -307,27 +314,39 @@ staffContainer.addEventListener("click", (e) => {
                                             <p class="text-gray-400 text-[.3rem] md:text-[.5rem]">${item.shortCut}</p>
                                         </div>
                                     </div>
-                                    <button class="text-white text-[.4rem] bg-red-600 rounded-full md:text-[.7rem] font-bold px-0.5 md:px-1 mr-1 md:mr-0.5 md:ml-0.5">✕</button>
+                                    <button class="text-white text-[.4rem] bg-red-600 rounded-full md:text-[.7rem] font-bold px-0.5 md:px-1 mr-1 md:mr-0.5 md:ml-0.5 delete-btn" data-id="${item.Id}">✕</button>
                                 `;
 
-    addStaffToRoom(roomName, item);
-    if(roomName == "Conference") ConferenceContainer.appendChild(itemContainer);
+    
+    if(roomName == "Conference") {
+        const max = 6;
+        const count = roomsData['Conference'] ? roomsData['Conference'].length : 0;
+        if(count >= max){
+            alert('You get to the max of the room');
+            return;
+        }
+        ConferenceContainer.appendChild(itemContainer);
+    };
     if(roomName == "Reception") ReceptionContainer.appendChild(itemContainer);
     if(roomName == "Server") ServerContainer.appendChild(itemContainer);
     if(roomName == "Security") SecurityContainer.appendChild(itemContainer);
     if(roomName == "Archives") ArchivesContainer.appendChild(itemContainer);
     if(roomName == "Staff room") StaffRoomContainer.appendChild(itemContainer);
-    
+    addStaffToRoom(roomName, item);
     if (!staffContainer.querySelector('.card')) {
         staffContainer.innerHTML = `<p class="text-gray-400">No one in this List</p>`;
     }
 });
 
 
+
+
 closeButton.addEventListener('click', () => {
     closeRoomPopup();
 })
 
+
+// function for Loading the Card that is inside the Rooms
 function loadRoom(roomName, container) {
     const list = roomsData[roomName] || [];
 
