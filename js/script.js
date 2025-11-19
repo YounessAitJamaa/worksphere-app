@@ -23,13 +23,14 @@ closeModalbutton.forEach(btn => {
 
 const select = document.getElementById('Role');
 
+// fetch data from role json and transform it into options in the select
 fetch('./data/role.json')
     .then(res => res.json())
     .then(data => {
-        console.log(data);
         data.forEach(d => {
             const option = document.createElement('option');
             option.setAttribute('value', d.roleName);
+            option.setAttribute('data-role', d.shortCut);
             option.textContent = d.roleName;
             select.appendChild(option);
         })
@@ -104,27 +105,43 @@ function DisplayStaff(unassingnedList) {
 
     unassignedContainer.innerHTML = '';
     unassingnedList.forEach(staff => {
+        console.log(staff);
         const stafItem = document.createElement('div');
         // stafItem.draggable = "true";
         const fullName = staff.name.split(' ');
         const lastName = fullName[fullName.length - 1];
-        stafItem.classList.add('shadow-xl', 'rounded-lg', 'm-2', 'md:m-4', 'flex', 'justify-between', 'bg-white');
+        stafItem.classList.add('shadow-xl', 'rounded-lg', 'm-2', 'md:m-4', 'flex', 'justify-between', 'bg-white', 'unassignedCards');
         stafItem.innerHTML = `
                                 <div class="flex">
                                     <img src="${staff.imageSrc}" alt="staff image" class="rounded-full w-8 h-8 m-2 md:m-3 md:w-14 md:h-14 object-cover">
                                     <h3 class="font-bold text-[.8rem] md:text-[1rem] mt-1 md:mt-3 md:ml-4">${lastName} <br> <span class="text-[.6rem] md:text-[.8rem] text-gray-400">${staff.role}</span></h3>
                                 </div>
-                                <div class="flex">
-                                    <button class="mr-2 text-yellowButton text-[.7rem] md:text-[1.2rem]  font-bold">Edit</button>
+                                <div class="flex flex-col mt-2 md:mt-2">
+                                    <button class="mr-1 text-yellowButton text-[.6rem] md:mr-3 md:text-[1.2rem] font-bold editButton">Edit</button>
+                                    <button class="text-white text-[.4rem] bg-red-600 rounded-full md:text-[.6rem] font-bold p-0.5 md:p-2 mt-1 md:mt-1 mr-0.5 md:mr-4  md:ml-1 deleteButton" data-id="${staff.Id}">✕</button>
                                 </div>
                             `;
         unassignedContainer.appendChild(stafItem);
     })
 }
 
-
 // Display the UnassingendStaff
 DisplayStaff(unassingnedStaff); 
+
+// Delete 
+const deleteButton = document.querySelectorAll('.deleteButton');
+deleteButton.forEach(btn => {
+    btn.addEventListener('click', () => {
+        let userConfirmed = confirm('Do you realy want to Delete that personne');
+        if(userConfirmed) {
+            const idStaff = btn.getAttribute('data-id');
+            const index = unassingnedStaff.indexOf(staff => staff.id === idStaff);
+            if (index) unassingnedStaff.splice(index, 1);
+            localStorage.setItem('unassingnedStaff', JSON.stringify(unassingnedStaff));
+            DisplayStaff(unassingnedStaff); 
+        }
+    })
+})
 
 
 // Submit Form 
@@ -135,6 +152,9 @@ addWorkerForm.addEventListener('submit', (e) => {
     const role = document.getElementById('Role').value;
     const email = document.querySelector('input[name="email"]').value;
     const phone = document.querySelector('input[name="phone"]').value;
+    const optionSelected = document.querySelector(`option[value="${role}"]`);
+    const shortCut = optionSelected.getAttribute('data-role');
+    console.log(shortCut);
 
     console.log(validationName(name));
     if (!validationName(name)) {
@@ -173,12 +193,12 @@ addWorkerForm.addEventListener('submit', (e) => {
 
     if (dateError) return;
 
-    const staff = {Id : Date.now(), name, role, imageSrc, email, phone, experiences};
+    const staff = {Id : Date.now(), name, role, shortCut, imageSrc, email, phone, experiences};
 
     unassingnedStaff.push(staff);
 
     DisplayStaff(unassingnedStaff);
-    // localStorage.setItem('unassingnedStaff', JSON.stringify(unassingnedStaff));
+    localStorage.setItem('unassingnedStaff', JSON.stringify(unassingnedStaff));
     imageSrc = '../img/default.png';
     document.getElementById('imageHolder').src = imageSrc;
     addWorkerForm.reset();
@@ -202,7 +222,7 @@ AddButton.forEach(btn => {
         const room = btn.getAttribute('data-room');
         
         let newList = [];
-        if (room == 'Reception') { 
+        if (room === 'Reception') { 
             const allowed = ['Réceptionnistes', 'Manager'];
             newList = unassingnedStaff.filter(staff => allowed.includes(staff.role)); 
         };
@@ -220,8 +240,7 @@ AddButton.forEach(btn => {
         };
         
         if(room === 'Staff room' || room === 'Conference') newList = [...unassingnedStaff];
-        
-        
+          
 
         staffContainer.innerHTML = '';
 
@@ -255,7 +274,7 @@ AddButton.forEach(btn => {
                                                     </div>
                                                     <div class="flex flex-col mr-1">
                                                     <h3 class="font-bold text-[.3rem] md:text-[.6rem]">${lastName}</h3>
-                                                        <p class="text-gray-400 text-[.3rem] md:text-[.5rem]">${item.role}</p>
+                                                        <p class="text-gray-400 text-[.3rem] md:text-[.5rem]">${item.shortCut}</p>
                                                     </div>
                                                 </div>
                                                 <button class="text-white text-[.4rem] bg-red-600 rounded-full md:text-[.7rem] font-bold px-0.5 md:px-1 mr-1 md:mr-0.5 md:ml-0.5">✕</button>
