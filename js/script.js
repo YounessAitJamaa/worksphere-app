@@ -1,4 +1,5 @@
 const unassingnedStaff = JSON.parse(localStorage.getItem('unassingnedStaff')) || []; // the list for unassigned Staff
+let roomsData = JSON.parse(localStorage.getItem('roomsData')) || {};
 
 const addNewWorker = document.getElementById('addNewWorker'); // add new worker button
 const modal = document.getElementById('modale'); // the modal
@@ -105,7 +106,6 @@ function DisplayStaff(unassingnedList) {
 
     unassignedContainer.innerHTML = '';
     unassingnedList.forEach(staff => {
-        console.log(staff);
         const stafItem = document.createElement('div');
         // stafItem.draggable = "true";
         const fullName = staff.name.split(' ');
@@ -135,10 +135,12 @@ deleteButton.forEach(btn => {
         let userConfirmed = confirm('Do you realy want to Delete that personne');
         if(userConfirmed) {
             const idStaff = btn.getAttribute('data-id');
-            const index = unassingnedStaff.indexOf(staff => staff.id === idStaff);
-            if (index) unassingnedStaff.splice(index, 1);
-            localStorage.setItem('unassingnedStaff', JSON.stringify(unassingnedStaff));
-            DisplayStaff(unassingnedStaff); 
+            const index = unassingnedStaff.findIndex(staff => staff.Id == idStaff);
+            if (index !== -1) {
+                unassingnedStaff.splice(index, 1);
+                localStorage.setItem('unassingnedStaff', JSON.stringify(unassingnedStaff));
+                DisplayStaff(unassingnedStaff); 
+            }
         }
     })
 })
@@ -206,48 +208,60 @@ addWorkerForm.addEventListener('submit', (e) => {
     closeModal();
 });
 
+// Rooms Containers
+const ConferenceContainer = document.getElementById('ConferenceContainer');
+const ReceptionContainer = document.getElementById('ReceptionContainer');
+const ServerContainer = document.getElementById('ServerContainer');
+const SecurityContainer = document.getElementById('SecurityContainer');
+const StaffRoomContainer = document.getElementById('StaffRoomContainer');
+const ArchivesContainer = document.getElementById('ArchivesContainer');
 
 const staffContainer = document.getElementById('staffContainer'); // Container for the Unassigned Staff after click on "+" button
 const roomPopup = document.getElementById('roomPopup');
 const AddButton = document.querySelectorAll('.AddButton');
 const closeButton = document.querySelector('.closePopup');
-const ConferenceContainer = document.getElementById('ConferenceContainer');
+
 const openRoomPopup = () => roomPopup.classList.remove('hidden');
 const closeRoomPopup = () => roomPopup.classList.add('hidden');
 
-
+// let conferenceList = JSON.parse(localStorage.getItem('conferenceList')) || [];
+let currentRoomList = [];
+let roomName = '';
 AddButton.forEach(btn => {
     btn.addEventListener('click', () => {
         openRoomPopup();
         const room = btn.getAttribute('data-room');
-        
-        let newList = [];
+         let newList = [];
         if (room === 'Reception') { 
             const allowed = ['Réceptionnistes', 'Manager'];
-            newList = unassingnedStaff.filter(staff => allowed.includes(staff.role)); 
+            currentRoomList = unassingnedStaff.filter(staff => allowed.includes(staff.role));
         };
         if (room === 'Server') { 
             const allowed = ['Manager', 'Techniciens IT', 'Nettoyage'];
-            newList = unassingnedStaff.filter(staff => allowed.includes(staff.role)); 
+            currentRoomList = unassingnedStaff.filter(staff => allowed.includes(staff.role)); 
         };
         if (room === 'Security') { 
             const allowed = ['Manager', 'Agents de sécurité', 'Nettoyage'];
-            newList = unassingnedStaff.filter(staff => allowed.includes(staff.role)); 
+            currentRoomList = unassingnedStaff.filter(staff => allowed.includes(staff.role)); 
         };
         if (room === 'Archives') { 
             const allowed = ['Manager'];
-            newList = unassingnedStaff.filter(staff => allowed.includes(staff.role)); 
+            currentRoomList = unassingnedStaff.filter(staff => allowed.includes(staff.role)); 
         };
         
-        if(room === 'Staff room' || room === 'Conference') newList = [...unassingnedStaff];
-          
+        if(room === 'Staff room' || room === 'Conference') {
+            currentRoomList = [...unassingnedStaff];
+            // conferenceList = [...newList];
+        }
+            
+        roomName = room;
 
         staffContainer.innerHTML = '';
 
-        newList.forEach(staff => {
-            
+        currentRoomList.forEach(staff => {
             const staffItem = document.createElement('div');
             staffItem.classList.add('shadow-xl', 'rounded-lg', 'm-2', 'md:m-4', 'flex', 'justify-between', 'bg-white', 'cursor-pointer', 'card'); 
+            staffItem.dataset.id = staff.Id;
             staffItem.innerHTML = `
                                 <div class="flex">
                                     <img src="${staff.imageSrc}" alt="staff image" class="rounded-full w-8 h-8 m-2 md:m-3 md:w-14 md:h-14 object-cover">
@@ -255,41 +269,58 @@ AddButton.forEach(btn => {
                                 </div>
                                  `;
             staffContainer.appendChild(staffItem);
-        })
-
-        const cards = document.querySelectorAll('.card');
-            
-        cards.forEach((card, index) => {
-                card.addEventListener('click', () => {
-                const item = newList[index];
-                const fullName = item.name.split(' ');
-                const lastName = fullName[fullName.length - 1];
-                console.log(lastName);
-                const itemContainer = document.createElement("div");
-                itemContainer.classList.add('rounded-lg', 'flex', 'justify-between', 'items-center', 'bg-white', 'md:p-0.5', 'w-fit', 'h-5', 'md:w-28', 'md:h-full');
-                itemContainer.innerHTML = `
-                                            <div class="flex items-center">
-                                                    <div class="md:mr-1 p-0.5">
-                                                    <img src="${item.imageSrc}" alt="staff image" class="rounded-full w-4 h-4 md:w-8 md:h-8 object-cover">
-                                                    </div>
-                                                    <div class="flex flex-col mr-1">
-                                                    <h3 class="font-bold text-[.3rem] md:text-[.6rem]">${lastName}</h3>
-                                                        <p class="text-gray-400 text-[.3rem] md:text-[.5rem]">${item.shortCut}</p>
-                                                    </div>
-                                                </div>
-                                                <button class="text-white text-[.4rem] bg-red-600 rounded-full md:text-[.7rem] font-bold px-0.5 md:px-1 mr-1 md:mr-0.5 md:ml-0.5">✕</button>
-                                            `;
-                ConferenceContainer.appendChild(itemContainer);
-            })
-        })
-
+        });
     });
+});
+
+
+
+
+staffContainer.addEventListener("click", (e) => {
+    const card = e.target.closest('.card');
+    if(!card) return;
+
+    const id = Number(card.dataset.id);
+    const index = currentRoomList.findIndex(staff => staff.Id === id);
+
+    if(index == -1) return;
+    const item = currentRoomList[index];
+
+    card.remove();
+    currentRoomList.splice(index, 1); 
+    const fullName = item.name.split(' ');
+    const lastName = fullName[fullName.length - 1];
+    
+    const itemContainer = document.createElement("div");
+    itemContainer.classList.add('rounded-lg', 'flex', 'justify-between', 'items-center', 'bg-white', 'md:p-0.5', 'w-fit', 'h-5', 'md:w-28', 'md:h-full');
+    itemContainer.innerHTML = `
+                                <div class="flex items-center">
+                                        <div class="md:mr-1 p-0.5">
+                                        <img src="${item.imageSrc}" alt="staff image" class="rounded-full w-4 h-4 md:w-8 md:h-8 object-cover">
+                                        </div>
+                                        <div class="flex flex-col mr-1">
+                                        <h3 class="font-bold text-[.3rem] md:text-[.6rem]">${lastName}</h3>
+                                            <p class="text-gray-400 text-[.3rem] md:text-[.5rem]">${item.shortCut}</p>
+                                        </div>
+                                    </div>
+                                    <button class="text-white text-[.4rem] bg-red-600 rounded-full md:text-[.7rem] font-bold px-0.5 md:px-1 mr-1 md:mr-0.5 md:ml-0.5">✕</button>
+                                `;
+
+    addStaffToRoom(roomName, item);
+    if(roomName == "Conference") ConferenceContainer.appendChild(itemContainer);
+    if(roomName == "Reception") ReceptionContainer.appendChild(itemContainer);
+    if(roomName == "Server") ServerContainer.appendChild(itemContainer);
+    if(roomName == "Security") SecurityContainer.appendChild(itemContainer);
+    if(roomName == "Archives") ArchivesContainer.appendChild(itemContainer);
+    if(roomName == "Staff room") StaffRoomContainer.appendChild(itemContainer);
+    
+    if (!staffContainer.querySelector('.card')) {
+        staffContainer.innerHTML = `<p class="text-gray-400">No one in this List</p>`;
+    }
 });
 
 
 closeButton.addEventListener('click', () => {
     closeRoomPopup();
 })
-
-
 
