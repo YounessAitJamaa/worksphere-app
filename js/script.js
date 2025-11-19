@@ -21,6 +21,23 @@ closeModalbutton.forEach(btn => {
     btn.addEventListener('click', closeModal);
 });
 
+const select = document.getElementById('Role');
+
+fetch('./data/role.json')
+    .then(res => res.json())
+    .then(data => {
+        console.log(data);
+        data.forEach(d => {
+            const option = document.createElement('option');
+            option.setAttribute('value', d.roleName);
+            option.textContent = d.roleName;
+            select.appendChild(option);
+        })
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error); 
+    });
+
 // Make more Experiences 
 addExperienceButton.addEventListener('click', () => {
     count++;
