@@ -1,0 +1,26 @@
+[
+    {
+        "roleName": "Manager",
+        "shortCut": "Mg"
+    },
+    {
+        "roleName": "Réceptionnistes",
+        "shortCut": "Rcp"
+    },
+    {
+        "roleName": "Techniciens IT",
+        "shortCut": "It"
+    },
+    {
+        "roleName": "Nettoyage",
+        "shortCut": "Ntg"
+    },
+    {
+        "roleName": "Agents de sécurité",
+        "shortCut": "sécurité"
+    },
+    {
+        "roleName": "Autres rôles",
+        "shortCut": "Autres"
+    }
+]

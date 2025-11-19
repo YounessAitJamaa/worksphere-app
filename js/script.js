@@ -47,8 +47,6 @@ addExperienceButton.addEventListener('click', () => {
 });
 
 
-
-
 let imageSrc = '../img/default.png'; // image url variable
 document.getElementById('imageHolder').src = imageSrc;
 const image = document.getElementById('image'); // image url input
@@ -158,7 +156,7 @@ addWorkerForm.addEventListener('submit', (e) => {
 
     if (dateError) return;
 
-    const staff = {Id : Date.now(), name, role, imageSrc, email, phone,experiences};
+    const staff = {Id : Date.now(), name, role, imageSrc, email, phone, experiences};
 
     unassingnedStaff.push(staff);
 
@@ -223,9 +221,31 @@ AddButton.forEach(btn => {
             staffContainer.appendChild(staffItem);
         })
 
-
-
-
+        const cards = document.querySelectorAll('.card');
+            
+        cards.forEach((card, index) => {
+                card.addEventListener('click', () => {
+                const item = newList[index];
+                const fullName = item.name.split(' ');
+                const lastName = fullName[fullName.length - 1];
+                console.log(lastName);
+                const itemContainer = document.createElement("div");
+                itemContainer.classList.add('rounded-lg', 'flex', 'justify-between', 'items-center', 'bg-white', 'md:p-0.5', 'w-fit', 'h-5', 'md:w-28', 'md:h-full');
+                itemContainer.innerHTML = `
+                                            <div class="flex items-center">
+                                                    <div class="md:mr-1 p-0.5">
+                                                    <img src="${item.imageSrc}" alt="staff image" class="rounded-full w-4 h-4 md:w-8 md:h-8 object-cover">
+                                                    </div>
+                                                    <div class="flex flex-col mr-1">
+                                                    <h3 class="font-bold text-[.3rem] md:text-[.6rem]">${lastName}</h3>
+                                                        <p class="text-gray-400 text-[.3rem] md:text-[.5rem]">${item.role}</p>
+                                                    </div>
+                                                </div>
+                                                <button class="text-white text-[.4rem] bg-red-600 rounded-full md:text-[.7rem] font-bold px-0.5 md:px-1 mr-1 md:mr-0.5 md:ml-0.5">✕</button>
+                                            `;
+                ConferenceContainer.appendChild(itemContainer);
+            })
+        })
 
     });
 });
