@@ -27,57 +27,43 @@
         <section  class="basis-3/4 w-full">
           <div class="grid grid-cols-[38%_17%_22%_22%] grid-rows-[33.5%_33%_33%] h-[90vh] w-full mt-4 bg-[url('/img/plan.jpg')] bg-cover bg-center">
             <!-- Salle de conférence -->
-            <div class="bg-[rgba(255,0,0,0.2)] border-4 border-black flex flex-col h-full">
+            <div class=" border-4 border-black flex flex-col h-full">
               
-              <h3 class="text-center text-[.5rem] md:text-[1.2rem] font-bold md:mt-3">Salle de conférence</h3> 
+              <h3 class="text-center text-[.5rem] md:text-[1.2rem] font-bold md:mt-3">Conference room</h3> 
               
-              <div class="grid grid-cols-3 grid-rows-2 mt-1 ml-2 gap-2 md:gap-2 md:mt-2 md:ml-3">
-
-                <!--Card-->
-                <div class="rounded-lg flex justify-between items-center bg-white md:p-0.5 w-fit h-5 md:w-28 md:h-full">
-                  <div class="flex items-center">
-                    <div class="md:mr-1 p-0.5">
-                      <img src="./img/default.png" alt="staff image" class="rounded-full w-4 h-4 md:w-8 md:h-8 object-cover">
-                    </div>
-                    <div class="flex flex-col mr-1">
-                      <h3 class="font-bold text-[.3rem] md:text-[.6rem]">Youness</h3>
-                        <p class="text-gray-400 text-[.3rem] md:text-[.6rem]">it</p>
-                    </div>
-                  </div>
-                  <button class="text-white text-[.4rem] bg-red-600 rounded-full md:text-[.7rem] font-bold px-0.5 md:px-1 mr-1 md:mr-0.5 md:ml-0.5">✕</button>
-                </div>
+              <div class="grid grid-cols-3 grid-rows-2 mt-1 ml-2 gap-2 md:gap-2 md:mt-2 md:ml-3" id="ConferenceContainer">
               </div>
 
-              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 md:mb-2 md:px-3 md:py-2">+</button>
+              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 md:mb-2 md:px-3 md:py-2 AddButton" data-room="Conference">+</button>
             </div>
             
             <div class="row-span-3"></div>
 
             <!-- Salle des serveurs -->
             <div class="bg-[rgba(255,0,0,0.2)] border-4 border-black flex flex-col h-full">
-              <h3 class="text-center text-[.5rem] md:text-[1.2rem] font-bold md:mt-3">Salle des serveurs</h3>
+              <h3 class="text-center text-[.5rem] md:text-[1.2rem] font-bold md:mt-3">Server room</h3>
 
               <div class="grid grid-cols-[48%_48%] grid-rows-2 gap-1 mt-1 md:gap-2 md:mt-2">
 
               </div>
 
-              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 md:mb-2 md:px-3 md:py-2">+</button>
+              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 md:mb-2 md:px-3 md:py-2 AddButton" data-room="Server">+</button>
             </div>
 
             <!-- Salle de sécurité -->
             <div class="bg-[rgba(255,0,0,0.2)] border-4 border-black flex flex-col h-full">
-              <h3 class="text-center text-[.5rem] md:text-[1.2rem] font-bold md:mt-3">Salle de sécurité</h3>
+              <h3 class="text-center text-[.5rem] md:text-[1.2rem] font-bold md:mt-3">Security room</h3>
 
               <div class="grid grid-cols-1 grid-rows-2 gap-1 mt-1 md:gap-2 md:mt-2">
 
               </div>
-              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 md:mb-2 md:px-3 md:py-2">+</button>
+              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 md:mb-2 md:px-3 md:py-2 AddButton" data-room="Security">+</button>
             </div>
 
             <!-- Réception -->
             <div class="bg-[rgba(255,0,0,0.2)] row-span-2 border-4 border-black flex flex-col h-full">
-              <h3 class="text-center text-[.5rem] md:text-[1.2rem] font-bold md:mt-3">Réception</h3>
-              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 md:mb-2 md:px-3 md:py-2">+</button>
+              <h3 class="text-center text-[.5rem] md:text-[1.2rem] font-bold md:mt-3">Reception</h3>
+              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 md:mb-2 md:px-3 md:py-2 AddButton" data-room="Reception">+</button>
             </div>
 
             <div class="col-span-2">
@@ -85,15 +71,15 @@
             </div>
 
             <!-- Salle du personnel -->
-            <div class="bg-[rgba(255,0,0,0.2)] border-4 border-black flex flex-col h-full">
-              <h3 class="text-center text-[.5rem] md:text-[1.2rem] font-bold md:mt-3">Salle du personnel</h3>
-              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 md:mb-2 md:px-3 md:py-2">+</button>
+            <div class="border-4 border-black flex flex-col h-full">
+              <h3 class="text-center text-[.5rem] md:text-[1.2rem] font-bold md:mt-3">Staff room</h3>
+              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 md:mb-2 md:px-3 md:py-2 AddButton" data-room="Staff room">+</button>
             </div>
 
             <!-- Salle d’archives -->
             <div class="bg-[rgba(255,0,0,0.2)] border-4 border-black flex flex-col h-full">
-              <h3 class="text-center text-[.5rem] md:text-[1.2rem] font-bold md:mt-3">Salle d’archives</h3>
-              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 md:mb-2 md:px-3 md:py-2">+</button>
+              <h3 class="text-center text-[.5rem] md:text-[1.2rem] font-bold md:mt-3">Archives Room</h3>
+              <button class="bg-blue-600 text-white mt-auto w-fit self-center px-1 md:mb-2 md:px-3 md:py-2 AddButton" data-room="Archives">+</button>
             </div>
           </div>
         </section>
@@ -106,7 +92,7 @@
 
         <header class="flex justify-between mb-4">
           <h2 class="text-lg font-bold text-greenButton">Add New Worker</h2>
-          <button class="text-lg font-bold closeModal">✕</button>
+          <button class="text-lg font-bold closeModal">&times;</button>
         </header>
 
         <form id="addWorkerForm" class="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -174,6 +160,19 @@
             <button type="submit" class="px-10 py-1 rounded bg-blue-600 text-white">Add</button>
           </div>
         </form>
+      </div>
+    </section>
+  
+    <section class="hidden fixed inset-0 z-50 bg-black/50 flex md:items-center justify-center p-4" id="roomPopup">
+        
+      <div class="bg-white w-[40%] rounded-lg max-h-[60vh] overflow-y-auto ">
+        <header class="flex justify-between p-4 border-b-2 border-black ">
+          <h3 class="font-bold text-[1.2rem]">Staff</h3>
+          <button class="font-bold closePopup">&times;</button>
+        </header>
+
+        <div id="staffContainer" class="p-4"></div>
+
       </div>
     </section>
 

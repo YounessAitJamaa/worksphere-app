@@ -21,6 +21,7 @@ closeModalbutton.forEach(btn => {
     btn.addEventListener('click', closeModal);
 });
 
+// Make more Experiences 
 addExperienceButton.addEventListener('click', () => {
     count++;
     const expItem = document.createElement('div');
@@ -46,6 +47,8 @@ addExperienceButton.addEventListener('click', () => {
 });
 
 
+
+
 let imageSrc = '../img/default.png'; // image url variable
 document.getElementById('imageHolder').src = imageSrc;
 const image = document.getElementById('image'); // image url input
@@ -53,7 +56,7 @@ const image = document.getElementById('image'); // image url input
 // eventListener for changing the image holder for 
 image.addEventListener('change', (e) => {
     imageSrc = e.target.value;
-    document.getElementById('imageHolder').src = imageSrc;
+    document.getElementById('imageHolder').src = imageSrc || '../img/default.png';
 })  
 
 
@@ -79,8 +82,7 @@ function validationDates(start, end) {
     return new Date(start) < new Date(end);
 }
 
-const unassignedContainer = document.getElementById('unassigned');
-
+const unassignedContainer = document.getElementById('unassigned'); 
 
 // function for Showing the staff
 function DisplayStaff(unassingnedList) {
@@ -88,24 +90,29 @@ function DisplayStaff(unassingnedList) {
     unassignedContainer.innerHTML = '';
     unassingnedList.forEach(staff => {
         const stafItem = document.createElement('div');
+        // stafItem.draggable = "true";
         const fullName = staff.name.split(' ');
         const lastName = fullName[fullName.length - 1];
         stafItem.classList.add('shadow-xl', 'rounded-lg', 'm-2', 'md:m-4', 'flex', 'justify-between', 'bg-white');
         stafItem.innerHTML = `
                                 <div class="flex">
                                     <img src="${staff.imageSrc}" alt="staff image" class="rounded-full w-8 h-8 m-2 md:m-3 md:w-14 md:h-14 object-cover">
-                                    <h3 class="font-bold text-[.8rem] md:text-[1rem] mt-1 md:mt-3 md:ml-4">${lastName} <br> <span class="md:text-[.8rem] text-gray-400">${staff.role}</span></h3>
+                                    <h3 class="font-bold text-[.8rem] md:text-[1rem] mt-1 md:mt-3 md:ml-4">${lastName} <br> <span class="text-[.6rem] md:text-[.8rem] text-gray-400">${staff.role}</span></h3>
                                 </div>
                                 <div class="flex">
-                                    <button class="mr-3 text-yellowButton text-[.7rem] md:text-[1.2rem] font-bold">Edit</button>
+                                    <button class="mr-2 text-yellowButton text-[.7rem] md:text-[1.2rem]  font-bold">Edit</button>
                                 </div>
                             `;
         unassignedContainer.appendChild(stafItem);
     })
 }
 
+
+// Display the UnassingendStaff
 DisplayStaff(unassingnedStaff); 
 
+
+// Submit Form 
 addWorkerForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -151,12 +158,12 @@ addWorkerForm.addEventListener('submit', (e) => {
 
     if (dateError) return;
 
-    const staff = {name, role, imageSrc, email, phone,experiences};
+    const staff = {Id : Date.now(), name, role, imageSrc, email, phone,experiences};
 
     unassingnedStaff.push(staff);
 
     DisplayStaff(unassingnedStaff);
-    localStorage.setItem('unassingnedStaff', JSON.stringify(unassingnedStaff));
+    // localStorage.setItem('unassingnedStaff', JSON.stringify(unassingnedStaff));
     imageSrc = '../img/default.png';
     document.getElementById('imageHolder').src = imageSrc;
     addWorkerForm.reset();
@@ -165,8 +172,68 @@ addWorkerForm.addEventListener('submit', (e) => {
 });
 
 
+const staffContainer = document.getElementById('staffContainer'); // Container for the Unassigned Staff after click on "+" button
+const roomPopup = document.getElementById('roomPopup');
+const AddButton = document.querySelectorAll('.AddButton');
+const closeButton = document.querySelector('.closePopup');
+const ConferenceContainer = document.getElementById('ConferenceContainer');
+const openRoomPopup = () => roomPopup.classList.remove('hidden');
+const closeRoomPopup = () => roomPopup.classList.add('hidden');
 
 
+AddButton.forEach(btn => {
+    btn.addEventListener('click', () => {
+        openRoomPopup();
+        const room = btn.getAttribute('data-room');
+        
+        let newList = [];
+        if (room == 'Reception') { 
+            const allowed = ['Réceptionnistes', 'Manager'];
+            newList = unassingnedStaff.filter(staff => allowed.includes(staff.role)); 
+        };
+        if (room === 'Server') { 
+            const allowed = ['Manager', 'Techniciens IT', 'Nettoyage'];
+            newList = unassingnedStaff.filter(staff => allowed.includes(staff.role)); 
+        };
+        if (room === 'Security') { 
+            const allowed = ['Manager', 'Agents de sécurité', 'Nettoyage'];
+            newList = unassingnedStaff.filter(staff => allowed.includes(staff.role)); 
+        };
+        if (room === 'Archives') { 
+            const allowed = ['Manager'];
+            newList = unassingnedStaff.filter(staff => allowed.includes(staff.role)); 
+        };
+        
+        if(room === 'Staff room' || room === 'Conference') newList = [...unassingnedStaff];
+        
+        
+
+        staffContainer.innerHTML = '';
+
+        newList.forEach(staff => {
+            
+            const staffItem = document.createElement('div');
+            staffItem.classList.add('shadow-xl', 'rounded-lg', 'm-2', 'md:m-4', 'flex', 'justify-between', 'bg-white', 'cursor-pointer', 'card'); 
+            staffItem.innerHTML = `
+                                <div class="flex">
+                                    <img src="${staff.imageSrc}" alt="staff image" class="rounded-full w-8 h-8 m-2 md:m-3 md:w-14 md:h-14 object-cover">
+                                    <h3 class="font-bold text-[.8rem] md:text-[1rem] mt-1 md:mt-3 md:ml-4">${staff.name} <br> <span class="text-[.6rem] md:text-[.8rem] text-gray-400">${staff.role}</span></h3>
+                                </div>
+                                 `;
+            staffContainer.appendChild(staffItem);
+        })
+
+
+
+
+
+    });
+});
+
+
+closeButton.addEventListener('click', () => {
+    closeRoomPopup();
+})
 
 
 
