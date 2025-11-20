@@ -1,14 +1,29 @@
-const unassingnedStaff = JSON.parse(localStorage.getItem('unassingnedStaff')) || []; // the list for unassigned Staff
+let unassingnedStaff = JSON.parse(localStorage.getItem('unassingnedStaff')) || []; 
 let roomsData = JSON.parse(localStorage.getItem('roomsData')) || {};
 
-const addNewWorker = document.getElementById('addNewWorker'); // add new worker button
-const modal = document.getElementById('modale'); // the modal
-const closeModalbutton = document.querySelectorAll('.closeModal'); // the close buttons
-const addWorkerForm = document.getElementById('addWorkerForm'); // the form
+// Rooms Containers
+const ConferenceContainer = document.getElementById('ConferenceContainer');
+const ReceptionContainer = document.getElementById('ReceptionContainer');
+const ServerContainer = document.getElementById('ServerContainer');
+const SecurityContainer = document.getElementById('SecurityContainer');
+const StaffRoomContainer = document.getElementById('StaffRoomContainer');
+const ArchivesContainer = document.getElementById('ArchivesContainer');
 
-const addExperienceButton = document.getElementById('addExperience'); 
-const expContainer = document.querySelector('.exp-container'); // the div where the experience added
-let count = 1; // the count for the number of experiences
+// Popup and form elements 
+const modal = document.getElementById('modale'); // the modal
+const addWorkerForm = document.getElementById('addWorkerForm'); // the form
+const addNewWorker = document.getElementById('addNewWorker'); // add new worker button
+const closeModalbutton = document.querySelectorAll('.closeModal'); // the close buttons
+const staffContainer = document.getElementById('staffContainer'); // Container for the Unassigned Staff after click on "+" button
+const roomPopup = document.getElementById('roomPopup');
+const AddButton = document.querySelectorAll('.AddButton');
+const closeButton = document.querySelector('.closePopup');
+
+// Rooms Containers Zone
+const receptionZone = document.getElementById('receptionZone');
+const serverZone = document.getElementById('serverZone');
+const securityZone = document.getElementById('securityZone');
+const archivesZone = document.getElementById('archivesZone');
 
 // function for closing and opening modal
 const openModal = () => modal.classList.remove('hidden');
@@ -22,9 +37,12 @@ closeModalbutton.forEach(btn => {
     btn.addEventListener('click', closeModal);
 });
 
-const select = document.getElementById('Role');
+const addExperienceButton = document.getElementById('addExperience'); 
+const expContainer = document.querySelector('.exp-container'); // the div where the experience added
+let count = 0; // the count for the number of experiences
 
 // fetch data from role json and transform it into options in the select
+const select = document.getElementById('Role');
 fetch('./data/role.json')
     .then(res => res.json())
     .then(data => {
@@ -65,12 +83,11 @@ addExperienceButton.addEventListener('click', () => {
     expContainer.appendChild(expItem);
 });
 
-
+// eventListener for changing the image holder for
 let imageSrc = '../img/default.png'; // image url variable
 document.getElementById('imageHolder').src = imageSrc;
 const image = document.getElementById('image'); // image url input
 
-// eventListener for changing the image holder for 
 image.addEventListener('change', (e) => {
     imageSrc = e.target.value;
     document.getElementById('imageHolder').src = imageSrc || '../img/default.png';
@@ -129,20 +146,20 @@ function DisplayStaff(unassingnedList) {
 DisplayStaff(unassingnedStaff); 
 
 // Delete 
-const deleteButton = document.querySelectorAll('.deleteButton');
-deleteButton.forEach(btn => {
-    btn.addEventListener('click', () => {
-        let userConfirmed = confirm('Do you realy want to Delete that personne');
-        if(userConfirmed) {
-            const idStaff = btn.getAttribute('data-id');
-            const index = unassingnedStaff.findIndex(staff => staff.Id == idStaff);
-            if (index !== -1) {
-                unassingnedStaff.splice(index, 1);
-                localStorage.setItem('unassingnedStaff', JSON.stringify(unassingnedStaff));
-                DisplayStaff(unassingnedStaff); 
-            }
-        }
-    })
+unassignedContainer.addEventListener('click', (e) => {
+    if(!e.target.classList.contains('deleteButton')) return;
+
+    let userConfirmed = confirm("Do you realy want to delete this person ?");
+    if(!userConfirmed) return;
+
+    const id = e.target.dataset.id;
+    const index = unassingnedStaff.findIndex(staff => staff.Id == id);
+
+    if(index !== -1) {
+        unassingnedStaff.splice(index, 1);
+        localStorage.setItem('unassingnedStaff', JSON.stringify(unassingnedStaff));
+        DisplayStaff(unassingnedStaff);
+    }
 })
 
 
@@ -204,22 +221,8 @@ addWorkerForm.addEventListener('submit', (e) => {
     imageSrc = '../img/default.png';
     document.getElementById('imageHolder').src = imageSrc;
     addWorkerForm.reset();
-    
     closeModal();
 });
-
-// Rooms Containers
-const ConferenceContainer = document.getElementById('ConferenceContainer');
-const ReceptionContainer = document.getElementById('ReceptionContainer');
-const ServerContainer = document.getElementById('ServerContainer');
-const SecurityContainer = document.getElementById('SecurityContainer');
-const StaffRoomContainer = document.getElementById('StaffRoomContainer');
-const ArchivesContainer = document.getElementById('ArchivesContainer');
-
-const staffContainer = document.getElementById('staffContainer'); // Container for the Unassigned Staff after click on "+" button
-const roomPopup = document.getElementById('roomPopup');
-const AddButton = document.querySelectorAll('.AddButton');
-const closeButton = document.querySelector('.closePopup');
 
 const openRoomPopup = () => roomPopup.classList.remove('hidden');
 const closeRoomPopup = () => roomPopup.classList.add('hidden');
@@ -227,8 +230,10 @@ const closeRoomPopup = () => roomPopup.classList.add('hidden');
 // let conferenceList = JSON.parse(localStorage.getItem('conferenceList')) || [];
 let currentRoomList = [];
 let roomName = '';
+
 AddButton.forEach(btn => {
     btn.addEventListener('click', () => {
+        
         openRoomPopup();
         const room = btn.getAttribute('data-room');
          let newList = [];
@@ -270,6 +275,9 @@ AddButton.forEach(btn => {
                                  `;
             staffContainer.appendChild(staffItem);
         });
+        if (!staffContainer.querySelector('.card')) {
+            staffContainer.innerHTML = `<p class="text-red-600 text-center">There is No Staff Can join that room</p>`;
+        }
     });
 });
 
@@ -280,12 +288,16 @@ function addStaffToRoom(roomName, staff) {
     localStorage.setItem('roomsData', JSON.stringify(roomsData));
 }
 
+
 staffContainer.addEventListener("click", (e) => {
+
     const card = e.target.closest('.card');
     if(!card) return;
 
     const id = Number(card.dataset.id);
     const index = currentRoomList.findIndex(staff => staff.Id === id);
+    const item = currentRoomList[index];
+
     const realIndex = unassingnedStaff.findIndex(staff => staff.Id === id);
 
     if(realIndex !== -1) {
@@ -294,14 +306,9 @@ staffContainer.addEventListener("click", (e) => {
         DisplayStaff(unassingnedStaff);
     }
 
-    if(index == -1) return;
-    const item = currentRoomList[index];
-
-    card.remove();
-    currentRoomList.splice(index, 1); 
     const fullName = item.name.split(' ');
     const lastName = fullName[fullName.length - 1];
-    
+    card.remove();
     const itemContainer = document.createElement("div");
     itemContainer.classList.add('rounded-lg', 'flex', 'justify-between', 'items-center', 'bg-white', 'md:p-0.5', 'w-fit', 'h-5', 'md:w-28', 'md:h-full', 'cardRoom');
     itemContainer.innerHTML = `
@@ -316,29 +323,47 @@ staffContainer.addEventListener("click", (e) => {
                                     </div>
                                     <button class="text-white text-[.4rem] bg-red-600 rounded-full md:text-[.7rem] font-bold px-0.5 md:px-1 mr-1 md:mr-0.5 md:ml-0.5 delete-btn" data-id="${item.Id}">✕</button>
                                 `;
-
-    
-    if(roomName == "Conference") {
-        const max = 6;
-        const count = roomsData['Conference'] ? roomsData['Conference'].length : 0;
-        if(count >= max){
-            alert('You get to the max of the room');
-            return;
-        }
-        ConferenceContainer.appendChild(itemContainer);
-    };
-    if(roomName == "Reception") ReceptionContainer.appendChild(itemContainer);
-    if(roomName == "Server") ServerContainer.appendChild(itemContainer);
-    if(roomName == "Security") SecurityContainer.appendChild(itemContainer);
-    if(roomName == "Archives") ArchivesContainer.appendChild(itemContainer);
-    if(roomName == "Staff room") StaffRoomContainer.appendChild(itemContainer);
     addStaffToRoom(roomName, item);
+    currentRoomList.splice(index, 1);
+    if(roomName == "Conference") loadRoom(roomName, ConferenceContainer);
+    if(roomName == "Reception") loadRoom(roomName, ReceptionContainer); 
+    if(roomName == "Server") loadRoom(roomName, ServerContainer); 
+    if(roomName == "Security")  loadRoom(roomName, SecurityContainer);
+    if(roomName == "Archives")  loadRoom(roomName, ArchivesContainer);
+    if(roomName == "Staff room")  loadRoom(roomName, StaffRoomContainer);
     if (!staffContainer.querySelector('.card')) {
-        staffContainer.innerHTML = `<p class="text-gray-400">No one in this List</p>`;
+            staffContainer.innerHTML = `<p class="text-red-600 text-center">No one in this List</p>`;
     }
 });
 
 
+// Delete function for roomCards
+function deleteCardRoom(container, roomName) {
+    container.addEventListener('click', (e) => {
+        if(!e.target.classList.contains('delete-btn')) return;
+        const id = Number(e.target.dataset.id);
+
+        e.target.closest('.cardRoom').remove();
+
+        const removedStaff = roomsData[roomName].find(x => x.Id == id);
+
+        roomsData[roomName] = roomsData[roomName].filter(staff => staff.Id !== id);
+        localStorage.setItem('roomsData', JSON.stringify(roomsData));
+
+        if(removedStaff) {
+            unassingnedStaff.push(removedStaff);
+            localStorage.setItem("unassingnedStaff", JSON.stringify(unassingnedStaff));
+            DisplayStaff(unassingnedStaff);
+        }
+    })
+}
+
+deleteCardRoom(ConferenceContainer, "Conference");
+deleteCardRoom(ReceptionContainer, "Reception");
+deleteCardRoom(ServerContainer, "Server");
+deleteCardRoom(SecurityContainer, "Security");
+deleteCardRoom(StaffRoomContainer, "Staff room");
+deleteCardRoom(ArchivesContainer, "Archives");
 
 
 closeButton.addEventListener('click', () => {
@@ -356,7 +381,8 @@ function loadRoom(roomName, container) {
         const fullName = item.name.split(' ');
         const lastName = fullName[fullName.length - 1];
         const itemContainer = document.createElement("div");
-        itemContainer.classList.add('rounded-lg', 'flex', 'justify-between', 'items-center', 'bg-white', 'md:p-0.5', 'w-fit', 'h-5', 'md:w-28', 'md:h-full');
+        itemContainer.classList.add('rounded-lg', 'flex', 'justify-between', 'items-center', 'bg-white', 'md:p-0.5', 'w-fit', 'h-5', 'md:w-28', 'md:h-full', 'cardRoom');
+        itemContainer.dataset.id = item.Id;
         itemContainer.innerHTML = `
                                     <div class="flex items-center">
                                         <div class="md:mr-1 p-0.5">
@@ -367,7 +393,7 @@ function loadRoom(roomName, container) {
                                             <p class="text-gray-400 text-[.3rem] md:text-[.5rem]">${item.shortCut}</p>
                                         </div>
                                     </div>
-                                    <button class="text-white text-[.4rem] bg-red-600 rounded-full md:text-[.7rem] font-bold px-0.5 md:px-1 mr-1 md:mr-0.5 md:ml-0.5 delete-btn">✕</button>
+                                    <button class="text-white text-[.4rem] bg-red-600 rounded-full md:text-[.7rem] font-bold px-0.5 md:px-1 mr-1 md:mr-0.5 md:ml-0.5 delete-btn" data-id="${item.Id}">✕</button>
                                 `;
         container.appendChild(itemContainer);
     });
