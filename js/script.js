@@ -236,9 +236,9 @@ AddButton.forEach(btn => {
         
         openRoomPopup();
         const room = btn.getAttribute('data-room');
-         let newList = [];
+        //  let newList = [];
         if (room === 'Reception') { 
-            const allowed = ['Réceptionnistes', 'Manager'];
+            const allowed = ['Réceptionnistes', 'Manager', 'Nettoyage'];
             currentRoomList = unassingnedStaff.filter(staff => allowed.includes(staff.role));
         };
         if (room === 'Server') { 
@@ -285,7 +285,9 @@ AddButton.forEach(btn => {
 function addStaffToRoom(roomName, staff) {
     if(!roomsData[roomName]) roomsData[roomName] = [];
     roomsData[roomName].push(staff);
+    handleZone();
     localStorage.setItem('roomsData', JSON.stringify(roomsData));
+    
 }
 
 
@@ -349,13 +351,16 @@ function deleteCardRoom(container, roomName) {
 
         roomsData[roomName] = roomsData[roomName].filter(staff => staff.Id !== id);
         localStorage.setItem('roomsData', JSON.stringify(roomsData));
-
+        handleZone();
+        
         if(removedStaff) {
             unassingnedStaff.push(removedStaff);
             localStorage.setItem("unassingnedStaff", JSON.stringify(unassingnedStaff));
             DisplayStaff(unassingnedStaff);
         }
     })
+
+
 }
 
 deleteCardRoom(ConferenceContainer, "Conference");
@@ -371,10 +376,29 @@ closeButton.addEventListener('click', () => {
 })
 
 
+function handleZone(){ 
+    const zones = [
+        {room : "Reception", container : receptionZone},
+        {room : "Server", container : serverZone},
+        {room : "Security", container : securityZone},
+        {room : "Archives", container : archivesZone}
+    ];
+
+    zones.forEach(({room, container}) => {
+        const count = (roomsData[room] || []).length;
+        if(count === 0) {
+            container.classList.add('bg-[rgba(255,0,0,0.2)]');
+        }else {
+            container.classList.remove('bg-[rgba(255,0,0,0.2)]');
+        }
+    })
+    
+}
+
 // function for Loading the Card that is inside the Rooms
 function loadRoom(roomName, container) {
     const list = roomsData[roomName] || [];
-
+    handleZone();
     container.innerHTML = '';
 
     list.forEach(item => {
@@ -396,7 +420,9 @@ function loadRoom(roomName, container) {
                                     <button class="text-white text-[.4rem] bg-red-600 rounded-full md:text-[.7rem] font-bold px-0.5 md:px-1 mr-1 md:mr-0.5 md:ml-0.5 delete-btn" data-id="${item.Id}">✕</button>
                                 `;
         container.appendChild(itemContainer);
+        
     });
+    
 }
 
 loadRoom("Conference", ConferenceContainer);
