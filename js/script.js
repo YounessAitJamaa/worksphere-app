@@ -1,6 +1,16 @@
 let unassingnedStaff = JSON.parse(localStorage.getItem('unassingnedStaff')) || []; 
 let roomsData = JSON.parse(localStorage.getItem('roomsData')) || {};
 
+const roomMax = {
+    'Conference' : 6,
+    'Server' : 4,
+    'Reception' : 12,
+    'Security' : 2,
+    'Archives' : 2,
+    'Staff room' : 4
+}
+
+
 // Rooms Containers
 const ConferenceContainer = document.getElementById('ConferenceContainer');
 const ReceptionContainer = document.getElementById('ReceptionContainer');
@@ -263,7 +273,7 @@ AddButton.forEach(btn => {
             currentRoomList = unassingnedStaff.filter(staff => allowed.includes(staff.role)); 
         };
         if (room === 'Security') { 
-            const allowed = ['Manager', 'Agents de sécurité', 'Nettoyage'];
+            const allowed = ['Manager', 'Agents sécurité', 'Nettoyage'];
             currentRoomList = unassingnedStaff.filter(staff => allowed.includes(staff.role)); 
         };
         if (room === 'Archives') { 
@@ -299,12 +309,22 @@ AddButton.forEach(btn => {
 });
 
 
+
+
+
 function addStaffToRoom(roomName, staff) {
+
     if(!roomsData[roomName]) roomsData[roomName] = [];
+    const max = roomMax[roomName];
+
+    if(roomsData[roomName].length >= max) {
+        return false;
+    }
+
     roomsData[roomName].push(staff);
-    handleZone();
     localStorage.setItem('roomsData', JSON.stringify(roomsData));
-    
+    handleZone();
+    return true;
 }
 
 
@@ -316,6 +336,13 @@ staffContainer.addEventListener("click", (e) => {
     const id = Number(card.dataset.id);
     const index = currentRoomList.findIndex(staff => staff.Id === id);
     const item = currentRoomList[index];
+
+    const success = addStaffToRoom(roomName, item);
+    console.log(success);
+    if(!success) {
+        alert(`The room ${roomName} is Full`);
+        return;
+    }
 
     const realIndex = unassingnedStaff.findIndex(staff => staff.Id === id);
 
@@ -342,7 +369,7 @@ staffContainer.addEventListener("click", (e) => {
                                     </div>
                                     <button class="text-white text-[.4rem] bg-red-600 rounded-full md:text-[.7rem] font-bold px-0.5 md:px-1 mr-1 md:mr-0.5 md:ml-0.5 delete-btn" data-id="${item.Id}">✕</button>
                                 `;
-    addStaffToRoom(roomName, item);
+    
     currentRoomList.splice(index, 1);
     if(roomName == "Conference") loadRoom(roomName, ConferenceContainer);
     if(roomName == "Reception") loadRoom(roomName, ReceptionContainer); 
