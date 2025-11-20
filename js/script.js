@@ -138,7 +138,7 @@ function DisplayStaff(unassingnedList) {
         // stafItem.draggable = "true";
         const fullName = staff.name.split(' ');
         const lastName = fullName[fullName.length - 1];
-        stafItem.classList.add('shadow-xl', 'rounded-lg', 'm-2', 'md:m-4', 'flex', 'justify-between', 'bg-white', 'unassignedCards');
+        stafItem.classList.add('shadow-xl', 'rounded-lg', 'm-2', 'md:m-4', 'flex', 'justify-between', 'bg-white', 'unassignedCards', 'Cards', 'cursor-pointer');
         stafItem.dataset.id = staff.Id;
         stafItem.innerHTML = `
                                 <div class="flex">
@@ -159,19 +159,23 @@ DisplayStaff(unassingnedStaff);
 
 // Delete 
 unassignedContainer.addEventListener('click', (e) => {
-    if(!e.target.classList.contains('deleteButton')) return;
+    if(e.target.classList.contains('deleteButton')) {
+        e.stopPropagation();
+        let userConfirmed = confirm("Do you realy want to delete this person ?");
+        if(!userConfirmed) return;
+        
 
-    let userConfirmed = confirm("Do you realy want to delete this person ?");
-    if(!userConfirmed) return;
+        const id = e.target.dataset.id;
+        const index = unassingnedStaff.findIndex(staff => staff.Id == id);
 
-    const id = e.target.dataset.id;
-    const index = unassingnedStaff.findIndex(staff => staff.Id == id);
+        if(index !== -1) {
+            unassingnedStaff.splice(index, 1);
+            localStorage.setItem('unassingnedStaff', JSON.stringify(unassingnedStaff));
+            DisplayStaff(unassingnedStaff);
+        }
+    };
+    
 
-    if(index !== -1) {
-        unassingnedStaff.splice(index, 1);
-        localStorage.setItem('unassingnedStaff', JSON.stringify(unassingnedStaff));
-        DisplayStaff(unassingnedStaff);
-    }
 })
 
 
@@ -185,6 +189,7 @@ addWorkerForm.addEventListener('submit', (e) => {
     const phone = document.querySelector('input[name="phone"]').value;
     const optionSelected = document.querySelector(`option[value="${role}"]`);
     const shortCut = optionSelected.getAttribute('data-role');
+    const location = 'Unassingned Staff';
     console.log(shortCut);
 
     console.log(validationName(name));
@@ -223,8 +228,8 @@ addWorkerForm.addEventListener('submit', (e) => {
     });
 
     if (dateError) return;
-
-    const staff = {Id : Date.now(), name, role, shortCut, imageSrc, email, phone, experiences};
+    
+    const staff = {Id : Date.now(), name, role, shortCut, imageSrc, email, phone, experiences, location};
 
     unassingnedStaff.push(staff);
 
@@ -324,7 +329,7 @@ staffContainer.addEventListener("click", (e) => {
     const lastName = fullName[fullName.length - 1];
     card.remove();
     const itemContainer = document.createElement("div");
-    itemContainer.classList.add('rounded-lg', 'flex', 'justify-between', 'items-center', 'bg-white', 'md:p-0.5', 'w-fit', 'h-5', 'md:w-28', 'md:h-full', 'cardRoom');
+    itemContainer.classList.add('rounded-lg', 'flex', 'justify-between', 'items-center', 'bg-white', 'md:p-0.5', 'w-fit', 'h-5', 'md:w-28', 'md:h-full', 'cardRoom', 'cursor-pointer', 'Cards');
     itemContainer.innerHTML = `
                                 <div class="flex items-center">
                                         <div class="md:mr-1 p-0.5">
@@ -354,25 +359,27 @@ staffContainer.addEventListener("click", (e) => {
 // Delete function for roomCards
 function deleteCardRoom(container, roomName) {
     container.addEventListener('click', (e) => {
-        if(!e.target.classList.contains('delete-btn')) return;
-        const id = Number(e.target.dataset.id);
+        if(e.target.classList.contains('delete-btn')) {
+            e.stopPropagation();
+            const id = Number(e.target.dataset.id);
 
-        e.target.closest('.cardRoom').remove();
+            e.target.closest('.cardRoom').remove();
 
-        const removedStaff = roomsData[roomName].find(x => x.Id == id);
+            const removedStaff = roomsData[roomName].find(x => x.Id == id);
 
-        roomsData[roomName] = roomsData[roomName].filter(staff => staff.Id !== id);
-        localStorage.setItem('roomsData', JSON.stringify(roomsData));
-        handleZone();
-        
-        if(removedStaff) {
-            unassingnedStaff.push(removedStaff);
-            localStorage.setItem("unassingnedStaff", JSON.stringify(unassingnedStaff));
-            DisplayStaff(unassingnedStaff);
-        }
+            roomsData[roomName] = roomsData[roomName].filter(staff => staff.Id !== id);
+            localStorage.setItem('roomsData', JSON.stringify(roomsData));
+            handleZone();
+            
+            if(removedStaff) {
+                unassingnedStaff.push(removedStaff);
+                localStorage.setItem("unassingnedStaff", JSON.stringify(unassingnedStaff));
+                DisplayStaff(unassingnedStaff);
+            }
+        };
+        // e.stopPropagation();
+
     })
-
-
 }
 
 deleteCardRoom(ConferenceContainer, "Conference");
@@ -417,7 +424,7 @@ function loadRoom(roomName, container) {
         const fullName = item.name.split(' ');
         const lastName = fullName[fullName.length - 1];
         const itemContainer = document.createElement("div");
-        itemContainer.classList.add('rounded-lg', 'flex', 'justify-between', 'items-center', 'bg-white', 'md:p-0.5', 'w-fit', 'h-5', 'md:w-28', 'md:h-full', 'cardRoom');
+        itemContainer.classList.add('rounded-lg', 'flex', 'justify-between', 'items-center', 'bg-white', 'md:p-0.5', 'w-fit', 'h-5', 'md:w-28', 'md:h-full', 'cardRoom', 'Cards', 'cursor-pointer');
         itemContainer.dataset.id = item.Id;
         itemContainer.innerHTML = `
                                     <div class="flex items-center">
@@ -434,7 +441,6 @@ function loadRoom(roomName, container) {
         container.appendChild(itemContainer);
         
     });
-    
 }
 
 loadRoom("Conference", ConferenceContainer);
@@ -444,31 +450,47 @@ loadRoom("Security", SecurityContainer);
 loadRoom("Staff room", StaffRoomContainer);
 loadRoom("Archives", ArchivesContainer);
 
+document.addEventListener('click', (e) => {
+    const card = e.target.closest('.cardRoom, .unassignedCards');
+    if(!card) return;
+    const rooms = ['Conference','Staff room', 'Server', 'Reception', 'Archives', 'Security'];
+    openProfileModal();
 
+    const id = Number(card.dataset.id);
+    let item = null; 
+    if(card.matches('.unassignedCards')) {
+        item = unassingnedStaff.find(staff => staff.Id == id);
+    }
 
-document.querySelectorAll('.unassignedCards').forEach(card => {
-    card.addEventListener('click', () => {
-        openProfileModal();
-        const id = card.getAttribute('data-id');
-        const item = unassingnedStaff.find(staff => staff.Id == id);
-        profileDetails.innerHTML = `
-                                    <img src="${item.imageSrc}" class="w-40 h-40 rounded-full object-cover border-2 border-gray-400" />
+    if(card.matches('.cardRoom')) {
+        let found;
+        for(const r of rooms) {
+            if(!roomsData[r]) continue;
+            found = roomsData[r].find(staff => staff.Id == id);
+            if(found) {
+                item = found;
+                break;
+            }
+        }
+    }
+    if (!item) return;
+    profileDetails.innerHTML = `
+                                <img src="${item.imageSrc}" class="w-40 h-40 rounded-full object-cover border-2 border-gray-400" />
 
-                                    <h3 id="profileName" class="text-xl font-bold"></h3>
-                                    <p id="profileRole" class="text-md text-gray-600"></p>
+                                <h3 id="profileName" class="text-xl font-bold"></h3>
+                                <p id="profileRole" class="text-md text-gray-600"></p>
 
-                                    <div class="w-full mt-4">
-                                        <p><strong>Name :</strong> <span id="profileEmail">${item.name}</span></p>
-                                        <p><strong>Role :</strong> <span id="profilePhone">${item.role}</span></p>
-                                        <p><strong>Email :</strong> <span id="profileEmail">${item.email}</span></p>
-                                        <p><strong>Téléphone :</strong> <span id="profilePhone">${item.phone}</span></p>
-                                        <p><strong>Localisation actuelle :</strong> <span id="profileLocation"></span></p>
-                                    </div>
+                                <div class="w-full mt-4">
+                                    <p><strong>Name :</strong> <span>${item.name}</span></p>
+                                    <p><strong>Role :</strong> <span>${item.role}</span></p>
+                                    <p><strong>Email :</strong> <span>${item.email}</span></p>
+                                    <p><strong>Téléphone :</strong> <span>${item.phone}</span></p>
+                                    <p><strong>Localisation actuelle :</strong> <span>${item.location}</span></p>
+                                </div>
 
-                                    <div class="w-full mt-4">
-                                        <h4 class="font-bold text-lg">Expériences :</h4>
-                                        <ul id="profileExp" class="list-disc ml-5 mt-2"></ul>
-                                    </div>
-                                    `;
-    })
+                                <div class="w-full mt-4">
+                                    <h4 class="font-bold text-lg">Expériences :</h4>
+                                    <ul id="profileExp" class="list-disc ml-5 mt-2"></ul>
+                                </div>
+    `;
 })
