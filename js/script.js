@@ -493,7 +493,11 @@ document.addEventListener('click', (e) => {
                                 <div class="w-full mt-4">
                                     <h4 class="font-bold text-lg">Expériences :</h4>
                                     <ul class="list-disc ml-5 mt-2">
-
+                                        ${item.experiences.map(exp => `
+                                            <li>Post : ${exp.post}</li>
+                                            <li>Entreprise : ${exp.enterprise}</li>
+                                            <li>From : ${exp.dateDebut} => To : ${exp.dateFin}</li>
+                                         `).join('')}
                                     </ul>
                                 </div>
     `;
