@@ -446,3 +446,29 @@ loadRoom("Archives", ArchivesContainer);
 
 
 
+document.querySelectorAll('.unassignedCards').forEach(card => {
+    card.addEventListener('click', () => {
+        openProfileModal();
+        const id = card.getAttribute('data-id');
+        const item = unassingnedStaff.find(staff => staff.Id == id);
+        profileDetails.innerHTML = `
+                                    <img src="${item.imageSrc}" class="w-40 h-40 rounded-full object-cover border-2 border-gray-400" />
+
+                                    <h3 id="profileName" class="text-xl font-bold"></h3>
+                                    <p id="profileRole" class="text-md text-gray-600"></p>
+
+                                    <div class="w-full mt-4">
+                                        <p><strong>Name :</strong> <span id="profileEmail">${item.name}</span></p>
+                                        <p><strong>Role :</strong> <span id="profilePhone">${item.role}</span></p>
+                                        <p><strong>Email :</strong> <span id="profileEmail">${item.email}</span></p>
+                                        <p><strong>Téléphone :</strong> <span id="profilePhone">${item.phone}</span></p>
+                                        <p><strong>Localisation actuelle :</strong> <span id="profileLocation"></span></p>
+                                    </div>
+
+                                    <div class="w-full mt-4">
+                                        <h4 class="font-bold text-lg">Expériences :</h4>
+                                        <ul id="profileExp" class="list-disc ml-5 mt-2"></ul>
+                                    </div>
+                                    `;
+    })
+})
