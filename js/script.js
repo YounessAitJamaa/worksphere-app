@@ -9,6 +9,8 @@ const SecurityContainer = document.getElementById('SecurityContainer');
 const StaffRoomContainer = document.getElementById('StaffRoomContainer');
 const ArchivesContainer = document.getElementById('ArchivesContainer');
 
+const profileDetails = document.getElementById("profileDetails"); // profile details container
+
 // Popup and form elements 
 const modal = document.getElementById('modale'); // the modal
 const addWorkerForm = document.getElementById('addWorkerForm'); // the form
@@ -18,6 +20,8 @@ const staffContainer = document.getElementById('staffContainer'); // Container f
 const roomPopup = document.getElementById('roomPopup');
 const AddButton = document.querySelectorAll('.AddButton');
 const closeButton = document.querySelector('.closePopup');
+const profileModal = document.getElementById('profileModal');
+const closeProfile = document.getElementById('closeProfile');
 
 // Rooms Containers Zone
 const receptionZone = document.getElementById('receptionZone');
@@ -28,6 +32,13 @@ const archivesZone = document.getElementById('archivesZone');
 // function for closing and opening modal
 const openModal = () => modal.classList.remove('hidden');
 const closeModal = () => modal.classList.add('hidden');
+
+// function for opening and closing profile modal
+const openProfileModal = () => profileModal.classList.remove('hidden');
+const closeProfileModal = () => profileModal.classList.add('hidden');
+
+// close profile modal after clicking in the cancel button
+closeProfile.addEventListener('click', closeProfileModal);
 
 // open modal after click on the button add new worker
 addNewWorker.addEventListener('click', openModal);
@@ -128,6 +139,7 @@ function DisplayStaff(unassingnedList) {
         const fullName = staff.name.split(' ');
         const lastName = fullName[fullName.length - 1];
         stafItem.classList.add('shadow-xl', 'rounded-lg', 'm-2', 'md:m-4', 'flex', 'justify-between', 'bg-white', 'unassignedCards');
+        stafItem.dataset.id = staff.Id;
         stafItem.innerHTML = `
                                 <div class="flex">
                                     <img src="${staff.imageSrc}" alt="staff image" class="rounded-full w-8 h-8 m-2 md:m-3 md:w-14 md:h-14 object-cover">
@@ -431,3 +443,6 @@ loadRoom("Server", ServerContainer);
 loadRoom("Security", SecurityContainer);
 loadRoom("Staff room", StaffRoomContainer);
 loadRoom("Archives", ArchivesContainer);
+
+
+

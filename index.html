@@ -152,7 +152,7 @@
         
       <div class="bg-white w-[40%] rounded-lg max-h-[60vh] overflow-y-auto ">
         <header class="flex justify-between p-4 border-b-2 border-black ">
-          <h3 class="font-bold text-[1.2rem]">Staff</h3>
+          <h3 class="text-lg font-bold text-blue-600">Staff</h3>
           <button class="font-bold closePopup">&times;</button>
         </header>
 
@@ -160,6 +160,21 @@
 
       </div>
     </section>
+
+
+    <section id="profileModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-lg w-full md:w-[50%] p-6 shadow-lg max-h-[80vh] overflow-y-auto">
+        
+        <header class="flex justify-between mb-4">
+          <h2 class="text-lg font-bold text-blue-600">Profile details</h2>
+          <button class="text-lg font-bold" id="closeProfile">&times;</button>
+        </header>
+
+        <div class="flex flex-col items-center gap-3" id="profileDetails">
+        </div>
+      </div>
+</section>
+
 
 
     <script src="./js/script.js"></script>
