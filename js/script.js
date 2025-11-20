@@ -372,9 +372,11 @@ function deleteCardRoom(container, roomName) {
             handleZone();
             
             if(removedStaff) {
+                removedStaff.location = 'Unassingned Staff';
                 unassingnedStaff.push(removedStaff);
                 localStorage.setItem("unassingnedStaff", JSON.stringify(unassingnedStaff));
                 DisplayStaff(unassingnedStaff);
+                
             }
         };
         // e.stopPropagation();
@@ -426,6 +428,7 @@ function loadRoom(roomName, container) {
         const itemContainer = document.createElement("div");
         itemContainer.classList.add('rounded-lg', 'flex', 'justify-between', 'items-center', 'bg-white', 'md:p-0.5', 'w-fit', 'h-5', 'md:w-28', 'md:h-full', 'cardRoom', 'Cards', 'cursor-pointer');
         itemContainer.dataset.id = item.Id;
+        item.location = roomName;
         itemContainer.innerHTML = `
                                     <div class="flex items-center">
                                         <div class="md:mr-1 p-0.5">
@@ -439,7 +442,6 @@ function loadRoom(roomName, container) {
                                     <button class="text-white text-[.4rem] bg-red-600 rounded-full md:text-[.7rem] font-bold px-0.5 md:px-1 mr-1 md:mr-0.5 md:ml-0.5 delete-btn" data-id="${item.Id}">✕</button>
                                 `;
         container.appendChild(itemContainer);
-        
     });
 }
 
@@ -490,7 +492,9 @@ document.addEventListener('click', (e) => {
 
                                 <div class="w-full mt-4">
                                     <h4 class="font-bold text-lg">Expériences :</h4>
-                                    <ul id="profileExp" class="list-disc ml-5 mt-2"></ul>
+                                    <ul class="list-disc ml-5 mt-2">
+
+                                    </ul>
                                 </div>
     `;
 })
