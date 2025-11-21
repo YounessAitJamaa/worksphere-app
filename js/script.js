@@ -83,26 +83,38 @@ fetch('./data/role.json')
 addExperienceButton.addEventListener('click', () => {
     count++;
     const expItem = document.createElement('div');
-    expItem.classList.add('exp-item', 'flex', 'flex-col', 'gap-2');
+    expItem.classList.add('exp-item', 'flex', 'flex-col', 'gap-2', 'experience');
+    expItem.dataset.id = Date.now();
     expItem.innerHTML = `
-                        <div class="flex justify-between items-center">
-                            <h5 class="font-semibold mb-2">Expérience ${count}</h5>
+                        <div class="flex justify-end items-center">
+                            <button type='button' class='removeExperience text-[1rem]'>&times;</button>
                         </div>
-                        <input type="text" placeholder="Poste" class="exp-title w-full p-2 bg-white rounded border border-gray-300" required>
-                        <input type="text" placeholder="Entreprise" class="exp-company w-full p-2 bg-white rounded border border-gray-300" required>
-                        <div class="flex flex-col gap-2">
-                            <label for="">Date debut</label>
-                            <input type="date" class="exp-start p-2 bg-white rounded border border-gray-300 flex-1" required>
-                        </div>
+                        <div class="border-2 border-black rounded-lg">
+                            <input type="text" placeholder="Poste" class="exp-title w-full p-2 bg-white rounded border border-gray-300" required>
+                            <input type="text" placeholder="Entreprise" class="exp-company w-full p-2 bg-white rounded border border-gray-300" required>
+                            <div class="flex flex-col gap-2">
+                                <label for="">Date debut</label>
+                                <input type="date" class="exp-start p-2 bg-white rounded border border-gray-300 flex-1" required>
+                            </div>
 
-                        <div class="flex flex-col gap-2">
-                            <label for="">Date fin</label>
-                            <input type="date" class="exp-end p-2 bg-white rounded border border-gray-300 flex-1" required>
+                            <div class="flex flex-col gap-2">
+                                <label for="">Date fin</label>
+                                <input type="date" class="exp-end p-2 bg-white rounded border border-gray-300 flex-1" required>
+                            </div>
                         </div>
                     `;
-    
     expContainer.appendChild(expItem);
 });
+
+
+document.addEventListener('click', (e) => { 
+    
+    if(e.target.closest('.removeExperience')) { 
+        const btn = e.target.closest('.removeExperience');
+        const parent = btn.closest('.experience');
+        parent.remove();
+    }
+})
 
 // eventListener for changing the image holder for
 let imageSrc = '../img/default.png'; // image url variable
