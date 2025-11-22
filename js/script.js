@@ -108,12 +108,12 @@ addExperienceButton.addEventListener('click', () => {
 
 
 document.addEventListener('click', (e) => { 
-    
     if(e.target.closest('.removeExperience')) { 
         const btn = e.target.closest('.removeExperience');
         const parent = btn.closest('.experience');
         parent.remove();
     }
+    
 })
 
 // eventListener for changing the image holder for
@@ -321,9 +321,6 @@ AddButton.forEach(btn => {
 });
 
 
-
-
-
 function addStaffToRoom(roomName, staff) {
 
     if(!roomsData[roomName]) roomsData[roomName] = [];
@@ -375,7 +372,7 @@ staffContainer.addEventListener("click", (e) => {
                                         <img src="${item.imageSrc}" alt="staff image" class="rounded-full w-4 h-4 md:w-8 md:h-8 object-cover">
                                         </div>
                                         <div class="flex flex-col mr-1">
-                                        <h3 class="font-bold text-[.3rem] md:text-[.6rem]">${lastName}</h3>
+                                            <h3 class="font-bold text-[.3rem] md:text-[.6rem]">${lastName}</h3>
                                             <p class="text-gray-400 text-[.3rem] md:text-[.5rem]">${item.shortCut}</p>
                                         </div>
                                     </div>
@@ -392,6 +389,7 @@ staffContainer.addEventListener("click", (e) => {
     if (!staffContainer.querySelector('.card')) {
             staffContainer.innerHTML = `<p class="text-red-600 text-center">No one in this List</p>`;
     }
+    
 });
 
 
